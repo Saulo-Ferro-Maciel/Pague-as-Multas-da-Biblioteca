@@ -1,249 +1,185 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8"> <!-- Define a codificação de caracteres como UTF-8 para suportar acentos -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Garante responsividade ajustando a largura ao dispositivo -->
-    <title>Pagamento de Multa - Biblioteca</title> <!-- Título da página exibido na aba do navegador -->
-    <!-- Importando a fonte Ubuntu do Google Fonts -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento de Multa - Biblioteca</title>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            margin: 0; /* Remove margens padrão do body */
-            padding: 0; /* Remove padding padrão do body */
-            display: flex; /* Usa flexbox para alinhar elementos */
-            flex-direction: column; /* Alinha os elementos em coluna (verticalmente) */
-            align-items: center; /* Centraliza os elementos horizontalmente */
-            min-height: 100vh; /* Garante que o body ocupe toda a altura da tela */
-            background-color: #f0f0f0; /* Define o fundo cinza claro */
-            font-family: 'Ubuntu', sans-serif; /* Aplica a fonte Ubuntu ao corpo da página */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            font-family: 'Ubuntu', sans-serif;
         }
-
         .header {
-            text-align: center; /* Centraliza o conteúdo do cabeçalho */
-            margin: 20px 0; /* Adiciona margem superior e inferior de 20px */
+            text-align: center;
+            margin: 20px 0;
         }
-
         .header img {
-            max-width: 110px; /* Define a largura máxima do logotipo como 130px */
-            opacity: 0.8; /* Define opacidade de 80% para o logotipo */
-            border-radius: 15%; /* Arredonda as bordas do logotipo */
+            max-width: 110px;
+            opacity: 0.8;
+            border-radius: 15%;
         }
-
         h2 {
-            font-family: 'Ubuntu', sans-serif; /* Usa a fonte Ubuntu para o título */
-            font-weight: 700; /* Define o peso da fonte como negrito */
-            font-size: 2.5em; /* Define o tamanho da fonte como 2.5 vezes o tamanho base */
-            color: #333; /* Define a cor do texto como cinza escuro */
-            margin: 10px 0; /* Adiciona margem superior e inferior de 10px */
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            font-size: 2.5em;
+            color: #333;
+            margin: 10px 0;
         }
-
         .container-central {
-            background-color: #fff; /* Define o fundo branco para o container */
-            border-radius: 15px; /* Arredonda as bordas do container */
-            padding: 20px; /* Adiciona padding interno de 20px */
-            width: 90%; /* Define a largura como 90% da tela */
-            max-width: 500px; /* Limita a largura máxima a 500px */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra suave */
-            display: flex; /* Usa flexbox para alinhar o conteúdo interno */
-            flex-direction: column; /* Alinha o conteúdo em coluna */
-            align-items: center; /* Centraliza o conteúdo horizontalmente */
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
         form {
-            display: flex; /* Usa flexbox para organizar os campos do formulário */
-            flex-direction: column; /* Empilha os campos verticalmente */
-            gap: 15px; /* Define espaçamento de 15px entre os elementos do formulário */
-            width: 100%; /* Faz o formulário ocupar toda a largura do container */
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
         }
-
         label {
-            font-weight: 400; /* Define o peso da fonte como normal */
-            color: #555; /* Define a cor do texto como cinza médio */
-            text-align: center; /* Centraliza o texto dos rótulos */
+            font-weight: 400;
+            color: #555;
+            text-align: center;
         }
-
         input[type="text"],
         input[type="date"] {
-            padding: 10px; /* Adiciona padding interno de 10px nos inputs */
-            border: 1px solid #ccc; /* Define uma borda cinza clara */
-            border-radius: 5px; /* Arredonda as bordas dos inputs */
-            font-size: 1em; /* Define o tamanho da fonte como padrão */
-            font-family: 'Ubuntu', sans-serif; /* Usa a fonte Ubuntu nos inputs */
-            width: 100%; /* Faz os inputs ocuparem toda a largura disponível */
-            box-sizing: border-box; /* Inclui padding e borda na largura total */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            font-family: 'Ubuntu', sans-serif;
+            width: 100%;
+            box-sizing: border-box;
         }
-
         button {
-            padding: 12px; /* Adiciona padding interno de 12px no botão */
-            background-color: #007bff; /* Define a cor de fundo como azul */
-            color: #fff; /* Define a cor do texto como branco */
-            border: none; /* Remove a borda padrão */
-            border-radius: 5px; /* Arredonda as bordas do botão */
-            font-size: 1.1em; /* Define o tamanho da fonte um pouco maior */
-            font-family: 'Ubuntu', sans-serif; /* Usa a fonte Ubuntu no botão */
-            cursor: pointer; /* Muda o cursor para indicar que é clicável */
-            transition: background-color 0.3s; /* Adiciona transição suave na cor de fundo */
-            width: 100%; /* Faz o botão ocupar toda a largura disponível */
+            padding: 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-family: 'Ubuntu', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
         }
-
         button:hover {
-            background-color: #0056b3; /* Muda a cor de fundo ao passar o mouse */
+            background-color: #0056b3;
         }
-
         #message {
-            margin-top: 20px; /* Adiciona margem superior de 20px na mensagem */
-            color: #555; /* Define a cor do texto como cinza médio */
-            font-size: 0.9em; /* Define o tamanho da fonte um pouco menor */
-            text-align: center; /* Centraliza o texto da mensagem */
-            width: 100%; /* Faz a mensagem ocupar toda a largura disponível */
+            margin-top: 20px;
+            color: #555;
+            font-size: 0.9em;
+            text-align: center;
+            width: 100%;
         }
-
-        /* Media Queries para Responsividade */
-        @media (max-width: 768px) { /* Estilos para telas até 768px (tablets) */
+        @media (max-width: 768px) {
             h2 {
-                font-size: 2em; /* Reduz o tamanho do título */
+                font-size: 2em;
             }
-
             .header img {
-                max-width: 100px; /* Reduz o tamanho do logotipo */
+                max-width: 100px;
             }
-
             .container-central {
-                padding: 15px; /* Reduz o padding interno */
-                max-width: 400px; /* Reduz a largura máxima */
+                padding: 15px;
+                max-width: 400px;
             }
-
             input[type="text"],
             input[type="date"] {
-                font-size: 0.9em; /* Reduz o tamanho da fonte dos inputs */
-                padding: 8px; /* Reduz o padding interno */
+                font-size: 0.9em;
+                padding: 8px;
             }
-
             button {
-                font-size: 1em; /* Reduz o tamanho da fonte do botão */
-                padding: 10px; /* Reduz o padding interno */
+                font-size: 1em;
+                padding: 10px;
             }
-
             #message {
-                font-size: 0.85em; /* Reduz o tamanho da mensagem */
+                font-size: 0.85em;
             }
         }
-
-        @media (max-width: 480px) { /* Estilos para telas até 480px (smartphones) */
+        @media (max-width: 480px) {
             h2 {
-                font-size: 1.5em; /* Reduz ainda mais o título */
+                font-size: 1.5em;
             }
-
             .header img {
-                max-width: 80px; /* Reduz ainda mais o logotipo */
+                max-width: 80px;
             }
-
             .container-central {
-                padding: 10px; /* Reduz ainda mais o padding */
-                max-width: 100%; /* Usa toda a largura disponível */
-                margin: 0 10px; /* Adiciona margens laterais pequenas */
+                padding: 10px;
+                max-width: 100%;
+                margin: 0 10px;
             }
-
             form {
-                gap: 10px; /* Reduz o espaçamento entre os campos */
+                gap: 10px;
             }
-
             input[type="text"],
             input[type="date"] {
-                font-size: 0.85em; /* Reduz mais a fonte dos inputs */
-                padding: 6px; /* Reduz mais o padding */
+                font-size: 0.85em;
+                padding: 6px;
             }
-
             button {
-                font-size: 0.9em; /* Reduz mais a fonte do botão */
-                padding: 8px; /* Reduz mais o padding */
+                font-size: 0.9em;
+                padding: 8px;
             }
-
             #message {
-                font-size: 0.8em; /* Reduz mais a mensagem */
+                font-size: 0.8em;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Cabeçalho com logotipo e título -->
     <div class="header">
-        <img src="https://portal.ifma.edu.br/wp-content/uploads/2015/09/ifma_novo.jpg" alt="Logotipo do Instituto Federal"> <!-- Logotipo do IFMA -->
-        <h2>Pague sua Multa da Biblioteca</h2> <!-- Título da página -->
+        <img src="https://portal.ifma.edu.br/wp-content/uploads/2015/09/ifma_novo.jpg" alt="Logotipo do Instituto Federal">
+        <h2>Pague sua Multa da Biblioteca</h2>
     </div>
-
-    <!-- Container principal com formulário e mensagem -->
     <div class="container-central">
-        <form id="fineForm"> <!-- Formulário para entrada de dados -->
-            <label for="cpf">CPF:</label> <!-- Rótulo do campo CPF -->
-            <input type="text" id="cpf" required placeholder="000.000.000-00"> <!-- Campo de entrada para CPF -->
-
-            <label for="name">Nome Completo:</label> <!-- Rótulo do campo Nome -->
-            <input type="text" id="name" required> <!-- Campo de entrada para Nome -->
-
-            <label for="dueDateOriginal">Data de Vencimento da Entrega:</label> <!-- Rótulo do campo Data de Vencimento da Entrega -->
-            <input type="date" id="dueDateOriginal" required> <!-- Campo de entrada para data de vencimento do empréstimo -->
-
-            <label for="dueDatePayment">Data de Vencimento do Pagamento:</label> <!-- Rótulo do campo Data de Vencimento do Pagamento -->
-            <input type="date" id="dueDatePayment" required> <!-- Campo de entrada para data negociada de pagamento -->
-
-            <button type="submit">Gerar Pagamento</button> <!-- Botão para enviar o formulário -->
+        <form id="fineForm">
+            <label for="cpf">CPF:</label>
+            <input type="text" id="cpf" required placeholder="000.000.000-00">
+            <label for="name">Nome Completo:</label>
+            <input type="text" id="name" required>
+            <label for="dueDateOriginal">Data de Vencimento da Entrega:</label>
+            <input type="date" id="dueDateOriginal" required>
+            <label for="dueDatePayment">Data de Vencimento do Pagamento:</label>
+            <input type="date" id="dueDatePayment" required>
+            <button type="submit">Gerar Pagamento</button>
         </form>
-
-        <div id="message"></div> <!-- Div para exibir mensagens ao usuário -->
+        <div id="message"></div>
     </div>
-
     <script>
-        // Adiciona um listener ao formulário para capturar o evento de envio
         document.getElementById("fineForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Impede o comportamento padrão de recarregar a página ao enviar o formulário
-
-            // Captura os valores dos campos
-            const cpf = document.getElementById("cpf").value; // Obtém o valor do campo CPF
-            let name = document.getElementById("name").value; // Obtém o valor do campo Nome
-
-            // Tratamento do nome: capitaliza a primeira letra após cada espaço
-            name = name.toLowerCase() // Converte todo o nome para minúsculas
-                .split(' ') // Divide o nome em palavras separadas por espaços
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitaliza a primeira letra de cada palavra
-                .join(' '); // Junta as palavras com espaços
-
-            const dueDateOriginal = new Date(document.getElementById("dueDateOriginal").value); // Obtém e converte a data de vencimento da entrega
-            const dueDatePayment = document.getElementById("dueDatePayment").value; // Obtém a data de vencimento do pagamento
-
-            // Obtém a data atual do sistema
-            const currentDate = new Date();
-
-            // Ajusta as datas para ignorar horário, comparando apenas o dia
+            event.preventDefault();
+            const cpf = document.getElementById("cpf").value;
+            let name = document.getElementById("name").value;
+            name = name.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+            const dueDateOriginal = new Date(document.getElementById("dueDateOriginal").value);
+            const dueDatePayment = new Date(document.getElementById("dueDatePayment").value);
             dueDateOriginal.setHours(0, 0, 0, 0);
-            currentDate.setHours(0, 0, 0, 0);
-
-            // Calcula os dias de atraso
-            const timeDiff = currentDate - dueDateOriginal; // Diferença em milissegundos
-            const daysLate = Math.max(Math.floor(timeDiff / (1000 * 60 * 60 * 24)), 0); // Converte para dias, evitando valores negativos
-
-            // Calcula o valor da multa: R$ 1,00 por dia, com mínimo de R$ 1,00 se datas forem iguais ou atrasadas
-            const fineAmount = (daysLate === 0 && dueDateOriginal <= currentDate ? 1 : daysLate * 1).toFixed(2);
-
-            // Formata a data atual para exibição no formato brasileiro (dd/mm/aaaa)
-            const currentDateString = currentDate.toLocaleDateString('pt-BR');
-
-            // Define a URL base do PagTesouro
+            dueDatePayment.setHours(0, 0, 0, 0);
+            const timeDiff = dueDatePayment - dueDateOriginal;
+            const daysLate = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            const valorDiarioDaMulta = 1;
+            const fineAmount = (daysLate <= 0 ? valorDiarioDaMulta : daysLate * valorDiarioDaMulta).toFixed(2);
+            const dueDatePaymentString = dueDatePayment.toLocaleDateString('pt-BR');
             const pagTesouroBaseUrl = "https://pagtesouro.tesouro.gov.br/portal-gru/#/pagamento-gru";
-
-            // Constrói a URL do PagTesouro com os parâmetros
-            const paymentUrl = `${pagTesouroBaseUrl}?orgao=26408&unidade=158286&servico=020017&cpfCnpjContribuinte=${cpf}&nomeContribuinte=${encodeURIComponent(name)}&valorPrincipal=${fineAmount}&vencimento=${dueDatePayment}`;
-
-            // Abre a URL do PagTesouro em uma nova aba
+            const paymentUrl = `${pagTesouroBaseUrl}?orgao=26408&unidade=158286&servico=020017&cpfCnpjContribuinte=${cpf}&nomeContribuinte=${encodeURIComponent(name)}&valorPrincipal=${fineAmount}&vencimento=${document.getElementById("dueDatePayment").value}`;
             window.open(paymentUrl, "_blank");
-
-            // Exibe a mensagem com os detalhes da multa
-            const messageDiv = document.getElementById("message");
-            messageDiv.innerHTML = `Multa calculada: R$ ${fineAmount} (${daysLate} dias de atraso até ${currentDateString}). A página do PagTesouro foi aberta com vencimento em ${dueDatePayment}. Se os campos não forem preenchidos automaticamente, insira o CPF, Nome e Valor manualmente.`;
-
-            // Limpa os campos de informações pessoais (CPF e Nome)
-            document.getElementById("cpf").value = ""; // Reseta o campo CPF para vazio
-            document.getElementById("name").value = ""; // Reseta o campo Nome para vazio
+            document.getElementById("message").innerHTML = `Multa calculada: R$ ${fineAmount} (${daysLate <= 0 ? 0 : daysLate} dias de atraso até ${dueDatePaymentString}). A página do PagTesouro foi aberta com vencimento em ${dueDatePaymentString}. Se os campos não forem preenchidos automaticamente, insira o CPF, Nome e Valor manualmente.`;
+            document.getElementById("cpf").value = "";
+            document.getElementById("name").value = "";
         });
     </script>
 </body>
