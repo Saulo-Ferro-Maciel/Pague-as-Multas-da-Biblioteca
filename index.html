@@ -55,7 +55,7 @@
             text-align: center;
         }
         input[type="text"],
-        input[type="date"] {
+        input[type="number"] {
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -98,7 +98,7 @@
                 max-width: 400px;
             }
             input[type="text"],
-            input[type="date"] {
+            input[type="number"] {
                 font-size: 0.9em;
                 padding: 8px;
             }
@@ -126,7 +126,7 @@
                 gap: 10px;
             }
             input[type="text"],
-            input[type="date"] {
+            input[type="number"] {
                 font-size: 0.85em;
                 padding: 6px;
             }
@@ -150,11 +150,11 @@
             <label for="cpf">CPF:</label>
             <input type="text" id="cpf" required placeholder="000.000.000-00">
             <label for="name">Nome Completo:</label>
-            <input type="text" id="name" required>
-            <label for="dueDateOriginal">Data de Vencimento da Entrega:</label>
-            <input type="date" id="dueDateOriginal" required>
-            <label for="dueDatePayment">Data de Vencimento do Pagamento:</label>
-            <input type="date" id="dueDatePayment" required>
+            <input type="text" id="name" required placeholder="Ex: Pedro José Cunha">
+            <label for="bookQuantity">Quantidade de Livros:</label>
+            <input type="number" id="bookQuantity" min="1" max="20" value="1" required>
+            <label for="daysLate">Dias de Atraso:</label>
+            <input type="number" id="daysLate" min="1" value="1" required>
             <button type="submit">Gerar Pagamento</button>
         </form>
         <div id="message"></div>
@@ -162,24 +162,57 @@
     <script>
         document.getElementById("fineForm").addEventListener("submit", function(event) {
             event.preventDefault();
-            const cpf = document.getElementById("cpf").value;
-            let name = document.getElementById("name").value;
-            name = name.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-            const dueDateOriginal = new Date(document.getElementById("dueDateOriginal").value);
-            const dueDatePayment = new Date(document.getElementById("dueDatePayment").value);
-            dueDateOriginal.setHours(0, 0, 0, 0);
-            dueDatePayment.setHours(0, 0, 0, 0);
-            const timeDiff = dueDatePayment - dueDateOriginal;
-            const daysLate = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            const valorDiarioDaMulta = 1;
-            const fineAmount = (daysLate <= 0 ? valorDiarioDaMulta : daysLate * valorDiarioDaMulta).toFixed(2);
-            const dueDatePaymentString = dueDatePayment.toLocaleDateString('pt-BR');
-            const pagTesouroBaseUrl = "https://pagtesouro.tesouro.gov.br/portal-gru/#/pagamento-gru";
-            const paymentUrl = `${pagTesouroBaseUrl}?orgao=26408&unidade=158286&servico=020017&cpfCnpjContribuinte=${cpf}&nomeContribuinte=${encodeURIComponent(name)}&valorPrincipal=${fineAmount}&vencimento=${document.getElementById("dueDatePayment").value}`;
-            window.open(paymentUrl, "_blank");
-            document.getElementById("message").innerHTML = `Multa calculada: R$ ${fineAmount} (${daysLate <= 0 ? 0 : daysLate} dias de atraso até ${dueDatePaymentString}). A página do PagTesouro foi aberta com vencimento em ${dueDatePaymentString}. Se os campos não forem preenchidos automaticamente, insira o CPF, Nome e Valor manualmente.`;
-            document.getElementById("cpf").value = "";
-            document.getElementById("name").value = "";
+            try {
+                const cpf = document.getElementById("cpf").value;
+                let name = document.getElementById("name").value;
+                name = name.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                let bookQuantity = parseInt(document.getElementById("bookQuantity").value);
+                let daysLate = parseInt(document.getElementById("daysLate").value);
+
+                // Validação de bookQuantity
+                if (isNaN(bookQuantity) || bookQuantity < 1) {
+                    document.getElementById("bookQuantity").value = 1;
+                    bookQuantity = 1;
+                } else if (bookQuantity > 20) {
+                    document.getElementById("bookQuantity").value = 20;
+                    bookQuantity = 20;
+                }
+
+                // Validação de daysLate (apenas ≥ 1)
+                if (isNaN(daysLate) || daysLate < 1) {
+                    document.getElementById("daysLate").value = 1;
+                    document.getElementById("message").innerHTML = "Os dias de atraso devem ser iguais ou maiores que 1. Ajustado para 1.";
+                    daysLate = 1;
+                }
+
+                const valorDiarioDaMulta = 1;
+                const fineAmount = (bookQuantity * daysLate * valorDiarioDaMulta).toFixed(2);
+                
+                // Data atual para vencimento
+                const today = new Date();
+                const dueDatePaymentString = today.toLocaleDateString('pt-BR');
+                const dueDatePaymentForUrl = today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+                const pagTesouroBaseUrl = "https://pagtesouro.tesouro.gov.br/portal-gru/#/pagamento-gru";
+                const paymentUrl = `${pagTesouroBaseUrl}?orgao=26408&unidade=158286&servico=020017&cpfCnpjContribuinte=${encodeURIComponent(cpf)}&nomeContribuinte=${encodeURIComponent(name)}&valorPrincipal=${fineAmount}&vencimento=${dueDatePaymentForUrl}`;
+
+                console.log("URL gerado:", paymentUrl); // Log para depuração
+                const newWindow = window.open(paymentUrl, "_blank");
+                if (!newWindow) {
+                    throw new Error("Não foi possível abrir a página do PagTesouro. Verifique se os pop-ups estão bloqueados.");
+                }
+
+                document.getElementById("message").innerHTML = `Multa calculada: R$ ${fineAmount} (${daysLate} dias de atraso, ${bookQuantity} livro${bookQuantity > 1 ? 's' : ''}). A página do PagTesouro foi aberta com vencimento em ${dueDatePaymentString}. Se os campos não forem preenchidos automaticamente, insira o CPF, Nome e Valor manualmente.`;
+
+                // Limpar formulário
+                document.getElementById("cpf").value = "";
+                document.getElementById("name").value = "";
+                document.getElementById("bookQuantity").value = 1;
+                document.getElementById("daysLate").value = 1; // Resetar para 1
+            } catch (error) {
+                console.error("Erro ao processar o pagamento:", error);
+                document.getElementById("message").innerHTML = `Erro ao gerar o pagamento: ${error.message}. Verifique os dados e tente novamente.`;
+            }
         });
     </script>
 </body>
